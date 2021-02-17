@@ -12,6 +12,7 @@ export default function HeatMap(props: Props) {
   const yl = Array.from({ length: 5 }).fill('').map((_, i) => 'y'+i)
 
   const onClick = React.useCallback(() => {
+    // @ts-ignore
     window.ym(72603163,'reachGoal','oncellclick')
   }, [])
 
