@@ -1,31 +1,44 @@
 import React from 'react'
-import HeatMapReact from 'react-heatmap-grid'
+// @ts-ignore
+import {Container, CellData} from './HeatMap/Contatiner'
 
 interface Props {
 
 }
 
 export default function HeatMap(props: Props) {
-  const arr = Array.from({ length: 5 }).map(_ => Array.from({ length: 5 }).map(_ => Math.floor(Math.random() * Math.floor(10))))
-  console.log(arr)
-  const xl = Array.from({ length: 5 }).fill('').map((_, i) => 'x'+i)
-  const yl = Array.from({ length: 5 }).fill('').map((_, i) => 'y'+i)
+
+  const [data, setData] = React.useState<CellData[][]>([])
 
   const onClick = React.useCallback(() => {
     // @ts-ignore
     window.ym(72603163,'reachGoal','oncellclick')
   }, [])
 
-  return (
-    <div><HeatMapReact onClick={onClick} data={arr} xLabels={xl} yLabels={yl} squares height={45} cellStyle={(background, value, min, max, data, x, y) => ({
-      background: `rgb(0, 151, 230, ${1 - (max - value) / (max - min)})`,
-      fontSize: "11.5px",
-      color: "#444444"
-    })}
-    cellRender={value => {
-      return value && <div>{value}</div>
-    }}>
+  const getData = React.useCallback(async () => {
+    let arr
+    const res = await fetch('/api/heatMap')
+    arr = await res.json()
+    setData(arr)
+  }, [])
 
-    </HeatMapReact></div>
+  React.useEffect(() => {
+    getData()
+  }, [getData])
+
+  return data.length && (
+    <Container
+      backgroundColor={() => ({
+        red: 0,
+        green: 255,
+        blue: 155,
+      })}
+      data={() => data}
+      onClick={() => {
+        onClick()
+      }}
+      intervalSpace={2}>
+
+    </Container>
   )
 }

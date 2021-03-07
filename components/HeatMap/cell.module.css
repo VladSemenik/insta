@@ -1,0 +1,17 @@
+.cell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-width: 2px;
+    cursor: pointer;
+}
+
+.cell:hover,
+.cell:focus,
+.cell:active {
+    color: #0070f3;
+    border-color: #0070f3;
+    border-style: solid;
+}
